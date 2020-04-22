@@ -25,4 +25,44 @@ router.route('/add').post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+// get by ID
+router.route("/:id").get((req, res) => {
+    Exercise.findById(req.params.id)
+        .then(exercise => {
+            if (!exercise) { return res.status(404).json("Exercise ID is not found!!") }
+            res.json(exercise)
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+// delete by ID
+router.route("/:id").delete((req, res) => {
+    Exercise.findByIdAndDelete(req.params.id)
+        .then(() => {
+            res.json('Exercise deleted!')
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+// update by ID
+router.route("/:id").put((req, res) => {
+    Exercise.findById(req.params.id)
+        .then(exercise => {
+            if (!exercise) { return res.status(404).json("Exercise ID is not found!!") }
+
+            exercise.username = req.body.username;
+            exercise.description = req.body.description;
+            exercise.duration = Number(req.body.duration);
+            exercise.date = Date.parse(req.body.date);
+
+            exercise.save()
+                .then(() => res.json("Exercise updated!"))
+                .catch(err => res.status(400).json("Error: " + err));
+
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+
+
 module.exports = router;
