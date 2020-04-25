@@ -14,15 +14,32 @@ const Exercise = props => (
     </tr>
 )
 
-
 export default class ExercisesList extends Component {
-
     constructor(props) {
-        super(props)
+        super(props);
 
-        this.deleteExercise = this.deleteExercise.bind(this);
+        this.deleteExercise = this.deleteExercise.bind(this)
 
         this.state = { exercises: [] };
+    }
+
+    componentDidMount() {
+        axios.get('http://localhost:5000/exercises/')
+            .then(response => {
+                this.setState({ exercises: response.data })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    deleteExercise(id) {
+        axios.delete('http://localhost:5000/exercises/' + id)
+            .then(response => { console.log(response.data) });
+
+        this.setState({
+            exercises: this.state.exercises.filter(el => el._id !== id)
+        })
     }
 
     exerciseList() {
@@ -31,25 +48,6 @@ export default class ExercisesList extends Component {
         })
     }
 
-    componentDidMount() {
-        axios.get("http://localhost:5000/exercises")
-            .then(res => {
-                this.setState({ exercises: res.data })
-            })
-            .catch(err => console.log(err));
-    }
-
-    deleteExercise(id) {
-        axios.delete("http://localhost:5000/exercises" + id)
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err))
-
-        // to refresh page automatically with updated data
-        this.setState({
-            exercises: this.state.exercises.filter(ele => ele._id !== id)
-        })
-
-    }
     render() {
         return (
             <div>
