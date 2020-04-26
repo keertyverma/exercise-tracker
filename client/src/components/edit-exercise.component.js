@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from '../utilities/client';
+import { withRouter } from 'react-router-dom';
 
-export default class EditExercise extends Component {
+class EditExercise extends Component {
     constructor(props) {
         super(props);
 
@@ -85,9 +86,10 @@ export default class EditExercise extends Component {
         console.log(exercise);
 
         axios.put("/exercises/" + this.props.match.params.id, exercise)
-            .then(res => console.log(res.data));
-
-        window.location = '/';
+            .then(res => {
+                console.log(res.data);
+                this.props.history.push('/exercise-tracker')
+            });
     }
 
 
@@ -149,3 +151,5 @@ export default class EditExercise extends Component {
         )
     }
 }
+
+export default withRouter(EditExercise)

@@ -13,7 +13,7 @@ function App() {
       <div className="container">
         <Navbar />
         <br />
-        <Route path="/" exact component={ExerciseList} />
+        <Route path="/exercise-tracker" exact component={ExerciseList} />
         <Route path="/edit/:id" component={EditExercise} />
         <Route path="/create" component={CreateExercise} />
         <Route path="/user" component={CreateUser} />
